@@ -7,6 +7,9 @@ import AccountSelector from './AccountSelector';
 import { Input, Tooltip, Icon, Button } from 'antd';
 import styled from 'styled-components';
 import SearchBar from './SearchBar';
+import { Text } from '@polkadot/types'
+import { TxButton, InputNumber } from '@polkadot/ui-app';
+import BN from 'bn.js';
 
 const Wrapper = styled.div`
   padding: 1rem;
@@ -31,7 +34,8 @@ type Props = {
 
 type State = {
   accountId?: string;
-  donmain?: string;
+  donmain?: Text;
+  price?: BN
 };
 
 export default class Bid extends React.PureComponent<Props, State> {
@@ -40,8 +44,14 @@ export default class Bid extends React.PureComponent<Props, State> {
   private onAccountChange = (accountId?: string): void => {
     this.setState({ accountId });
   }
+  
+  private onPriceChange = (price?: BN): void => {
+    this.setState({ price });
+  }
 
   render () {
+    const { accountId, donmain, price } = this.state;
+
     return (
       <Wrapper>
         <AccountSelector onChange={this.onAccountChange} />
@@ -55,20 +65,20 @@ export default class Bid extends React.PureComponent<Props, State> {
                   <div style={{ color: 'rgba(0,0,0,.25)' }}>CPAY</div>
                 </Tooltip>
               }
+              onChange={price => this.onPriceChange(new BN(price))}
             />
           </InputWrapper>
           <div>
             <InputWrapper>
-              <Input placeholder='Enter your username' onChange={value => this.setState({ donmain: value })} />
+              <Input placeholder='Enter your username' onChange={value => this.setState({ donmain: new Text(value) })} />
             </InputWrapper>
-            <Button
-              onClick={() => console.log('bid-domain:', this.state.donmain)}
-              type='primary'
-              style={{ width: '8rem' }}
-            >
-              Bid
-            </Button>
           </div>
+          <TxButton
+              accountId={accountId}
+              label='Bid'
+              params={[donmain, price]}
+              tx='domainService.bid'
+            />
         </BidWrapper>
       </Wrapper>
     );
