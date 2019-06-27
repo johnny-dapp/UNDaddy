@@ -14,3 +14,14 @@
     text-align: center;
   }
 }
+
+#search-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.before-input {
+  font-size: 25px;
+}

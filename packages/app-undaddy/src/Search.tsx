@@ -5,19 +5,32 @@
 import React from "react";
 import { Bubble, InputAddress } from "@polkadot/ui-app";
 import { AccountIndex, Balance, Nonce } from "@polkadot/ui-reactive";
+import "antd/dist/antd.css";
+import SearchBar from "./SearchBar";
 
 type Props = {
   onChange: (accountId?: string) => void
 };
 
 type State = {
-  accountId?: string
+  accountId?: string,
+  domainName: string
 };
 
 export default class Search extends React.PureComponent<Props, State> {
-  state: State = {};
+  state: State = {
+    domainName: ""
+  };
+
+  requestDomainName = name => {
+    this.setState({ domainName: name });
+  };
 
   render() {
-    return <div>Search</div>;
+    return (
+      <div id="search-container">
+        <SearchBar onSearch={this.requestDomainName} />
+      </div>
+    );
   }
 }
