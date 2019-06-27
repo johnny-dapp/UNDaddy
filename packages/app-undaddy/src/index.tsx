@@ -7,6 +7,10 @@
 // `t` is inject into props (see the HOC export) and `t('any text')
 // does the translation
 import { AppProps, I18nProps } from '@polkadot/ui-app/types';
+import basicMd from '@polkadot/app-accounts/md/basic.md';
+import { Route, Switch } from 'react-router';
+import { HelpOverlay, Tabs } from '@polkadot/ui-app';
+import { ComponentProps, LocationProps } from './types';
 
 // external imports (including those found in the packages/*
 // of this repo)
@@ -16,32 +20,78 @@ import React from 'react';
 import './index.css';
 
 // local imports and components
-import AccountSelector from './AccountSelector';
-import SummaryBar from './SummaryBar';
-import Transfer from './Transfer';
+import Search from './Search';
+import Bid from './Bid';
+import YourDomain from './YourDomain';
 import translate from './translate';
 
 // define out internal types
 type Props = AppProps & I18nProps;
 type State = {
   accountId?: string
+  hidden: Array<string>,
+  tabs: Array<TabItem>
 };
 
-class App extends React.PureComponent<Props, State> {
-  state: State = {};
+class UNDaddyApp extends React.PureComponent<Props, State> {
+  constructor(props: Props) {
+    super(props)
 
-  render () {
-    const { accountId } = this.state;
+    const { t } = props;
+    this.state = {
+      tabs: [
+        {
+          name: 'search',
+          text: t('Search Domain')
+        },
+        {
+          hasParams: true,
+          name: 'bid',
+          text: t('Bid domain')
+        },
+        {
+          name: 'your-domain',
+          text: t('Your Domain')
+        }
+      ]
+    };
+  }
+
+  render() {
+    const { basePath } = this.props;
+    const { tabs } = this.state;
 
     return (
-      // in all apps, the main wrapper is setup to allow the padding
-      // and margins inside the application. (Just from a consistent pov)
-      <main>
-        <SummaryBar />
-        <AccountSelector onChange={this.onAccountChange} />
-        <Transfer accountId={accountId} />
+      <main className='accounts--App'>
+        <HelpOverlay md={basicMd} />
+        <header>
+          <Tabs
+            basePath={basePath}
+            items={tabs}
+          />
+        </header>
+        <Switch>
+          <Route path={`${basePath}/`} exact render={this.renderComponent(Search)} />
+          <Route path={`${basePath}/bid`} render={this.renderComponent(Bid)} />
+          <Route path={`${basePath}/your-domain`} render={this.renderComponent(YourDomain)} />
+        </Switch>
       </main>
     );
+  }
+
+  private renderComponent(Component: React.ComponentType<ComponentProps>) {
+    return ({ match }: LocationProps) => {
+      const { basePath, location, onStatusChange } = this.props;
+
+      return (
+        <Component
+          basePath={basePath}
+          location={location}
+          match={match}
+          onStatusChange={onStatusChange}
+        />
+      );
+    };
   }
 
   private onAccountChange = (accountId?: string): void => {
@@ -49,4 +99,4 @@ class App extends React.PureComponent<Props, State> {
   }
 }
 
-export default translate(App);
+export default translate(UNDaddyApp);
