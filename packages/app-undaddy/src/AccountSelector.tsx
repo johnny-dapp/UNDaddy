@@ -7,11 +7,11 @@ import { Bubble, InputAddress } from '@polkadot/ui-app';
 import { Nonce } from '@polkadot/ui-reactive';
 
 type Props = {
-  onChange: (accountId?: string) => void
+  onChange: (accountId?: string) => void;
 };
 
 type State = {
-  accountId?: string
+  accountId?: string;
 };
 
 export default class AccountSelector extends React.PureComponent<Props, State> {
@@ -22,12 +22,7 @@ export default class AccountSelector extends React.PureComponent<Props, State> {
 
     return (
       <section className='template--AccountSelector ui--row'>
-        <InputAddress
-          className='medium'
-          label='Account'
-          onChange={this.onChange}
-          type='account'
-        />
+        <InputAddress className='medium' label='Account' onChange={this.onChange} type='account' />
         <div className='medium'>
           <Bubble color='yellow' icon='target' label='transactions'>
             <Nonce params={accountId} />
@@ -40,8 +35,6 @@ export default class AccountSelector extends React.PureComponent<Props, State> {
   private onChange = (accountId?: string): void => {
     const { onChange } = this.props;
 
-    this.setState({ accountId }, () =>
-      onChange(accountId)
-    );
+    this.setState({ accountId }, () => onChange(accountId));
   }
 }
