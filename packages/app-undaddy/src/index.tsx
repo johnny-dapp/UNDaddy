@@ -11,6 +11,7 @@ import basicMd from '@polkadot/app-accounts/md/basic.md';
 import { Route, Switch } from 'react-router';
 import { HelpOverlay, Tabs } from '@polkadot/ui-app';
 import { ComponentProps, LocationProps } from './types';
+import 'antd/dist/antd.css';
 
 // external imports (including those found in the packages/*
 // of this repo)
@@ -28,14 +29,14 @@ import translate from './translate';
 // define out internal types
 type Props = AppProps & I18nProps;
 type State = {
-  accountId?: string
-  hidden: Array<string>,
-  tabs: Array<TabItem>
+  accountId?: string;
+  hidden: Array<string>;
+  tabs: Array<TabItem>;
 };
 
 class UNDaddyApp extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props)
+  constructor (props: Props) {
+    super(props);
 
     const { t } = props;
     this.state = {
@@ -57,7 +58,7 @@ class UNDaddyApp extends React.PureComponent<Props, State> {
     };
   }
 
-  render() {
+  render () {
     const { basePath } = this.props;
     const { tabs } = this.state;
 
@@ -65,10 +66,7 @@ class UNDaddyApp extends React.PureComponent<Props, State> {
       <main className='accounts--App'>
         <HelpOverlay md={basicMd} />
         <header>
-          <Tabs
-            basePath={basePath}
-            items={tabs}
-          />
+          <Tabs basePath={basePath} items={tabs} />
         </header>
         <Switch>
           <Route path={`${basePath}/`} exact render={this.renderComponent(Search)} />
@@ -79,18 +77,11 @@ class UNDaddyApp extends React.PureComponent<Props, State> {
     );
   }
 
-  private renderComponent(Component: React.ComponentType<ComponentProps>) {
+  private renderComponent (Component: React.ComponentType<ComponentProps>) {
     return ({ match }: LocationProps) => {
       const { basePath, location, onStatusChange } = this.props;
 
-      return (
-        <Component
-          basePath={basePath}
-          location={location}
-          match={match}
-          onStatusChange={onStatusChange}
-        />
-      );
+      return <Component basePath={basePath} location={location} match={match} onStatusChange={onStatusChange} />;
     };
   }
 
