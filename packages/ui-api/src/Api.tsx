@@ -18,25 +18,41 @@ import { formatBalance, isTestChain } from '@polkadot/util';
 import ApiContext from './ApiContext';
 
 const CustomTypes = {
-  'Item': 'u32',
-  'ItemId': 'u64',
-  'AssetId': 'u32',
-  'AssetIdOf': 'u32',
-  'Price': '(AssetId, Balance)',
-  'PriceOf': '(AssetId, Balance)'
+  Item: 'u32',
+  ItemId: 'u64',
+  AssetId: 'u32',
+  AssetIdOf: 'u32',
+  Price: '(AssetId, Balance)',
+  PriceOf: '(AssetId, Balance)',
+  DomainAddr: 'Vec<u8>',
+  DomainName: 'Text',
+  Bid: {
+    bidder: 'AccountId',
+    name: 'DomainName',
+    amount: 'Balance'
+  },
+  BidInfo: {
+    bid: 'Bid',
+    end: 'BlockNumber'
+  },
+  DomainDetail: {
+    owner: 'AccountId',
+    expire: 'BlockNumber',
+    addr: 'Option<DomainAddr>'
+  }
 };
 
 let api: ApiPromise;
 
 type Props = {
-  children: React.ReactNode,
-  queueExtrinsic: QueueTx$ExtrinsicAdd,
-  queueSetTxStatus: QueueTx$MessageSetStatus,
-  url?: string
+  children: React.ReactNode;
+  queueExtrinsic: QueueTx$ExtrinsicAdd;
+  queueSetTxStatus: QueueTx$MessageSetStatus;
+  url?: string;
 };
 
 type State = ApiProps & {
-  chain?: string
+  chain?: string;
 };
 
 export { api };
@@ -51,16 +67,15 @@ export default class ApiWrapper extends React.PureComponent<Props, State> {
     const provider = new WsProvider(url);
 
     const setApi = (provider: ProviderInterface): void => {
-      api = new Api({ provider, types: CustomTypes }) as any as ApiPromise;
+      api = (new Api({ provider, types: CustomTypes }) as any) as ApiPromise;
 
       this.setState({ api }, () => {
         this.subscribeEvents();
       });
     };
-    const setApiUrl = (url: string = defaults.WS_URL): void =>
-      setApi(new WsProvider(url));
+    const setApiUrl = (url: string = defaults.WS_URL): void => setApi(new WsProvider(url));
 
-    api = new Api({ provider, types: CustomTypes }) as any as ApiPromise;
+    api = (new Api({ provider, types: CustomTypes }) as any) as ApiPromise;
 
     this.state = {
       isApiConnected: false,
@@ -101,9 +116,7 @@ export default class ApiWrapper extends React.PureComponent<Props, State> {
     ]);
     const section = Object.keys(api.tx)[0];
     const method = Object.keys(api.tx[section])[0];
-    const chain = value
-      ? value.toString()
-      : null;
+    const chain = value ? value.toString() : null;
     const isDevelopment = isTestChain(chain);
 
     console.log('api: found chain', chain, JSON.stringify(properties));

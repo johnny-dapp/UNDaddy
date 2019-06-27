@@ -16,11 +16,13 @@ const BidWrapper = styled.div`
   padding-left: 15rem;
   margin: 1rem 0;
   display: flex;
+  flex-direction: column;
 `;
 
 const InputWrapper = styled.div`
   width: 30rem;
   margin-right: 1rem;
+  margin: 1rem 0;
 `;
 
 type Props = {
@@ -45,11 +47,28 @@ export default class Bid extends React.PureComponent<Props, State> {
         <AccountSelector onChange={this.onAccountChange} />
         <BidWrapper>
           <InputWrapper>
-            <Input placeholder='Enter your username' onChange={value => this.setState({ donmain: value })} />
+            <Input
+              placeholder='Enter your price'
+              prefix={<Icon type='dollar' style={{ color: 'rgba(0,0,0,.25)' }} />}
+              suffix={
+                <Tooltip title='Extra information'>
+                  <div style={{ color: 'rgba(0,0,0,.25)' }}>CPAY</div>
+                </Tooltip>
+              }
+            />
           </InputWrapper>
-          <Button onClick={() => console.log('bid-domain:', this.state.donmain)} type='primary'>
-            Bid
-          </Button>
+          <div>
+            <InputWrapper>
+              <Input placeholder='Enter your username' onChange={value => this.setState({ donmain: value })} />
+            </InputWrapper>
+            <Button
+              onClick={() => console.log('bid-domain:', this.state.donmain)}
+              type='primary'
+              style={{ width: '8rem' }}
+            >
+              Bid
+            </Button>
+          </div>
         </BidWrapper>
       </Wrapper>
     );
