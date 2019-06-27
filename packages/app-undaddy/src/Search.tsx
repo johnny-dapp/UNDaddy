@@ -44,14 +44,14 @@ class Search extends React.PureComponent<Props, State> {
     let resultContent = null;
     console.log(this.state.domainDetail);
     if (this.state.result) {
-      if (this.state.taken) {
+      if (this.state.domainDetail !== undefined ){
         const description = (
           <div>
-            Domain Public Address:
+            Domain Public Address:{this.state.domainDetail.addr}
             <br />
-            Owners:
+            Owner:{this.state.domainDetail.owner}
             <br />
-            Expiry Date:
+            Expiry Date:{this.state.domainDetail.expire}
           </div>
         );
         resultContent = (
