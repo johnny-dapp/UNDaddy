@@ -19,7 +19,6 @@ class SearchBar extends React.PureComponent {
   };
 
   onChangeText = (e: Object) => {
-    console.log(e);
     this.setState({ input: e.target.value });
   };
 
