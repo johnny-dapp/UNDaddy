@@ -2,37 +2,44 @@ import React from "react";
 import { Input, Select, Button } from "antd";
 
 const { Option } = Select;
-const selectAfter = (
-  <Select defaultValue=".un" style={{ width: 80 }}>
-    <Option value=".un">.un</Option>
-    <Option value=".io">.io</Option>
-    <Option value=".ai">.ai</Option>
-    <Option value=".com">.com</Option>
-  </Select>
-);
 
 type Props = {
   onSearch: (accountId?: string) => void
 };
 
 type State = {
-  input: string
+  input: string,
+  suffix: string
 };
 
 class SearchBar extends React.PureComponent {
   state: State = {
-    input: ""
+    input: "",
+    suffix: ".un"
   };
 
   onChangeText = (e: Object) => {
+    console.log(e);
     this.setState({ input: e.target.value });
   };
 
+  onChangeSuffix = (value: string) => {
+    this.setState({ suffix: value });
+  };
+
   onClick = () => {
-    this.props.onSearch(this.state.input);
+    this.props.onSearch("www." + this.state.input + this.state.suffix);
   };
 
   render() {
+    const selectAfter = (
+      <Select defaultValue=".un" style={{ width: 80 }} onChange={this.onChangeSuffix}>
+        <Option value=".un">.un</Option>
+        <Option value=".io">.io</Option>
+        <Option value=".ai">.ai</Option>
+        <Option value=".com">.com</Option>
+      </Select>
+    );
     return (
       <div style={{ marginBottom: 16, display: "flex" }}>
         <Input
