@@ -171,7 +171,7 @@ function createWebpack({ alias = {}, context, name = "index" }) {
         isProd
           ? null
           : new WebpackPluginServe({
-              port: 3030,
+              port: 3000,
               static: path.join(process.cwd(), "/build")
             })
       ])
