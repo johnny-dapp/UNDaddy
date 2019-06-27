@@ -5,9 +5,7 @@
   "main": "index.js",
   "scripts": {},
   "author": "Team JohnnyDappy",
-  "maintainers": [
-    "Pramodya De Alwis <pramodya1@hotmail.com>"
-  ],
+  "maintainers": ["Pramodya De Alwis <pramodya1@hotmail.com>"],
   "license": "Apache-2.0",
   "dependencies": {
     "@babel/runtime": "^7.4.4",

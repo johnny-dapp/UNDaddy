@@ -4,8 +4,10 @@
 
 import React from "react";
 import { Bubble, InputAddress } from "@polkadot/ui-app";
+import { Option, AccountId, Tuple, UInt, Text } from "@polkadot/types";
 import { AccountIndex, Balance, Nonce } from "@polkadot/ui-reactive";
 import { Alert } from "antd";
+import { withCalls } from "@polkadot/ui-api/with";
 import "antd/dist/antd.css";
 import SearchBar from "./SearchBar";
 
@@ -15,17 +17,17 @@ type Props = {
 
 type State = {
   accountId?: string,
-  domainName: string,
+  domainName?: Text,
   result: boolean,
   taken: boolean,
   owner: string,
   domainIP: string,
-  expiry: string
+  expiry: string,
+  domainDetail?: Option<any>
 };
 
-export default class Search extends React.PureComponent<Props, State> {
+class Search extends React.PureComponent<Props, State> {
   state: State = {
-    domainName: "",
     result: false,
     taken: false,
     owner: "",
@@ -33,14 +35,14 @@ export default class Search extends React.PureComponent<Props, State> {
     expiry: ""
   };
 
-  requestDomainName = name => {
+  requestDomainName = (name: string) => {
     this.setState({ domainName: name });
+    setTimeout(() => this.setState({result:true}), 400)
   };
-
-  renderResultContent = () => { };
 
   render() {
     let resultContent = null;
+    console.log(this.state.domainDetail);
     if (this.state.result) {
       if (this.state.taken) {
         const description = (
@@ -89,3 +91,6 @@ export default class Search extends React.PureComponent<Props, State> {
     );
   }
 }
+
+export default withCalls <
+  Props >(["query.domainService.domains", { paramName: "domainName", propName: "domainDetail" }])(Search);
