@@ -6,7 +6,7 @@ import { Props } from '../types';
 
 import React from 'react';
 import { Input } from '@polkadot/ui-app';
-import { Bytes } from '@polkadot/types';
+import { Text as TextType } from '@polkadot/types';
 
 import Bare from './Bare';
 
@@ -41,7 +41,7 @@ export default class Text extends React.PureComponent<Props> {
 
     onChange && onChange({
       isValid,
-      value: new Bytes(value)
+      value: new TextType(value)
     });
   }
 }

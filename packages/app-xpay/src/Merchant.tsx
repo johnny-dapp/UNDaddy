@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import BN from 'bn.js';
 import { Button, TxButton, InputNumber, InputBalance, Dropdown } from '@polkadot/ui-app';
 import { withCalls } from '@polkadot/ui-api/with';
-import { Vector, Text } from '@polkadot/types';
+import { Vector, Text, Option } from '@polkadot/types';
 
 import items from './items';
 
@@ -22,7 +22,7 @@ const ActionWrapper = styled.div`
 
 type Props = {
   accountId?: string,
-  ownerDomains?: Vector<Text>,
+  ownerDomains: Option<Vector<Text>>,
 };
 
 type State = {
@@ -81,6 +81,7 @@ class Merchant extends React.PureComponent<Props, State> {
   render () {
     const { accountId, ownerDomains } = this.props;
     const { item, quantity, asset, price, itemId, domain } = this.state;
+    const domains = ownerDomains && ownerDomains.isSome ? ownerDomains.unwrap().toArray() : [];
     return (
       <section>
         <ActionWrapper>
@@ -91,7 +92,7 @@ class Merchant extends React.PureComponent<Props, State> {
             <Dropdown
               value={domain}
               label='Domain'
-              options={ownerDomains && ownerDomains.toArray()}
+              options={domains}
               onChange={this.onDomainChange}
             />
           </div>
