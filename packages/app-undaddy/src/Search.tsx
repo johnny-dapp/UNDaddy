@@ -5,6 +5,7 @@
 import React from "react";
 import { Bubble, InputAddress } from "@polkadot/ui-app";
 import { AccountIndex, Balance, Nonce } from "@polkadot/ui-reactive";
+import { Alert } from "antd";
 import "antd/dist/antd.css";
 import SearchBar from "./SearchBar";
 
@@ -14,22 +15,76 @@ type Props = {
 
 type State = {
   accountId?: string,
-  domainName: string
+  domainName: string,
+  result: boolean,
+  taken: boolean,
+  owner: string,
+  domainIP: string,
+  expiry: string
 };
 
 export default class Search extends React.PureComponent<Props, State> {
   state: State = {
-    domainName: ""
+    domainName: "",
+    result: false,
+    taken: false,
+    owner: "",
+    domainIP: "",
+    expiry: ""
   };
 
   requestDomainName = name => {
     this.setState({ domainName: name });
   };
 
+  renderResultContent = () => { };
+
   render() {
+    let resultContent = null;
+    if (this.state.result) {
+      if (this.state.taken) {
+        const description = (
+          <div>
+            Domain Public Address:
+            <br />
+            Owners:
+            <br />
+            Expiry Date:
+          </div>
+        );
+        resultContent = (
+          <div className="alert-box">
+            <Alert
+              showIcon
+              message="This domain is taken"
+              description={description}
+              type="info"
+              style={{
+                width: 500
+              }}
+            />
+          </div>
+        );
+      } else {
+        resultContent = (
+          <div className="alert-box">
+            <Alert
+              showIcon
+              message="This domain is avaliable"
+              type="success"
+              style={{
+                width: 500
+              }}
+            />
+          </div>
+        );
+      }
+    }
+
     return (
       <div id="search-container">
         <SearchBar onSearch={this.requestDomainName} />
+        <div className="result-box">{resultContent}</div>
       </div>
     );
   }
