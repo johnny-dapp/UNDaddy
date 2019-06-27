@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import BN from 'bn.js';
 import { Option, AccountId, Tuple, UInt } from '@polkadot/types';
-import { AddressMini, TxButton } from '@polkadot/ui-app';
+import { TxButton } from '@polkadot/ui-app';
 import { withCalls } from '@polkadot/ui-api/with';
 import { formatBalance } from '@polkadot/util';
 import { assetRegistry } from '@cennznet/crml-generic-asset';
@@ -61,9 +61,7 @@ const ItemCard = ({ accountId, itemId, item, owner, quantity, price, payingAsset
       <label>ID: {itemId}</label>
       <label>
         Merchant:
-        <AddressMini
-          value={owner && owner.unwrap()}
-        />
+        {owner && owner.unwrap()}
       </label>
       <label>Stock: {quantityValue}</label>
       <label>Price: {assetName} {formatBalance(amount.toString())}</label>

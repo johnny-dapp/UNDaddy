@@ -44,7 +44,7 @@ export default class Bid extends React.PureComponent<Props, State> {
   private onAccountChange = (accountId?: string): void => {
     this.setState({ accountId });
   }
-  
+
   private onPriceChange = (price?: BN): void => {
     this.setState({ price });
   }
@@ -70,7 +70,7 @@ export default class Bid extends React.PureComponent<Props, State> {
           </InputWrapper>
           <div>
             <InputWrapper>
-              <Input placeholder='Enter your username' onChange={value => this.setState({ donmain: new Text(value) })} />
+              <Input placeholder='Enter the domain name' onChange={value => this.setState({ donmain: new Text(value) })} />
             </InputWrapper>
           </div>
           <TxButton

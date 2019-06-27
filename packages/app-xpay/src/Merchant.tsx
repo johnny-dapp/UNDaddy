@@ -45,6 +45,17 @@ const assets = [
   }
 ];
 
+const domains = [
+  {
+    text: 'centrality.un',
+    value: 'centrality.un'
+  },
+  {
+    text: 'test.un',
+    value: 'test.un'
+  }
+]
+
 class Merchant extends React.PureComponent<Props, State> {
   state: State = {
     item: items[0].value,
@@ -79,9 +90,8 @@ class Merchant extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { accountId, ownerDomains } = this.props;
+    const { accountId } = this.props;
     const { item, quantity, asset, price, itemId, domain } = this.state;
-    const domains = ownerDomains && ownerDomains.isSome ? ownerDomains.unwrap().toArray() : [];
     return (
       <section>
         <ActionWrapper>
@@ -127,7 +137,7 @@ class Merchant extends React.PureComponent<Props, State> {
               <TxButton
                 accountId={accountId}
                 label='Create Item'
-                params={[quantity, item, asset, price]}
+                params={[quantity, domain, item, asset, price]}
                 tx='xpay.createItem'
               />
             </Button.Group>
